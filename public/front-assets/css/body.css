@@ -1,0 +1,54 @@
+.tebel-banget {
+    font-weight: 900;
+  }
+  
+.tebel-sedang {
+    font-weight: bold;
+}
+
+.desc{
+    max-width: 400px;
+}
+
+.judul1{
+    color: #000;
+    margin-top: 10px;
+}
+
+.judul2{
+    color: #0f6fc9;
+    margin-top: -20px;
+}
+
+.hr{
+    height: 5px;
+    width: 75px;
+    border-radius: 50px;
+    background-color: #0f6fc9;
+}
+
+.button {
+    background-image: linear-gradient(to right, #0757a1 0%, #0f6fc9 49%);
+    border: none;
+    color: white;
+    padding: 16px 48px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .button:hover {
+    background-image: linear-gradient(to right, #0757a1 0%, #0f6fc9 49%);
+    color: white;
+  }
+  
+
+.gambar{
+  display: none;
+}
+
+.img{
+  width: 700px;
+  z-index: -1;
+}

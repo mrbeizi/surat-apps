@@ -27,7 +27,7 @@
 <body>
     <div class="lockscreen-wrapper">
         <div class="lockscreen-logo">
-          <a href=""><b>{{config('app.name')}}</b></a>
+          <b>{{config('app.name')}}</b>
         </div>
         <div class="lockscreen-item">          
           <div id="err" style="color: red">
