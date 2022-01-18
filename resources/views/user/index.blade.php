@@ -104,7 +104,6 @@
         <!-- AKHIR MODAL -->
 
         <!-- MULAI MODAL KONFIRMASI DELETE-->
-
         <div class="modal fade" tabindex="-1" role="dialog" id="konfirmasi-modal" data-backdrop="false">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -124,7 +123,9 @@
                 </div>
             </div>
         </div>
-    </div> 
+        <!-- AKHIR MODAL KONFIRMASI DELETE-->
+
+    </div>  
 </div>
 
 @endsection
@@ -134,7 +135,6 @@
 <!-- JAVASCRIPT -->
 <script>
     //CSRF TOKEN PADA HEADER
-    //Script ini wajib krn kita butuh csrf token setiap kali mengirim request post, patch, put dan delete ke server
     $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -144,21 +144,19 @@
     });
 
     //TOMBOL TAMBAH DATA
-    //jika tombol-tambah diklik maka
     $('#tombol-tambah').click(function () {
-        $('#button-simpan').val("create-post"); //valuenya menjadi create-post
-        $('#id').val(''); //valuenya menjadi kosong
-        $('#form-tambah-edit').trigger("reset"); //mereset semua input dll didalamnya
-        $('#modal-judul').html("Tambah User Baru"); //valuenya tambah pegawai baru
-        $('#tambah-edit-modal').modal('show'); //modal tampil
+        $('#button-simpan').val("create-post");
+        $('#id').val('');
+        $('#form-tambah-edit').trigger("reset");
+        $('#modal-judul').html("Tambah User Baru");
+        $('#tambah-edit-modal').modal('show');
     });
 
-    //MULAI DATATABLE
-    //script untuk memanggil data json dari server dan menampilkannya berupa datatable
+    // DATATABLE
     $(document).ready(function () {
         $('#table_user').DataTable({
             processing: true,
-            serverSide: true, //aktifkan server-side 
+            serverSide: true,
             ajax: {
                 url: "{{ route('data-user.index') }}",
                 type: 'GET'
@@ -185,9 +183,7 @@
         });
     });
 
-    //SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
-    //jika id = form-tambah-edit panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
-    //jalankan jquery validator terhadap setiap inputan dll dan eksekusi script ajax untuk simpan data
+    // TOMBOL TAMBAH
     if ($("#form-tambah-edit").length > 0) {
         $("#form-tambah-edit").validate({
             submitHandler: function (form) {
@@ -196,23 +192,23 @@
 
                 $.ajax({
                     data: $('#form-tambah-edit')
-                        .serialize(), //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
-                    url: "{{ route('data-user.store') }}", //url simpan data
-                    type: "POST", //karena simpan kita pakai method POST
-                    dataType: 'json', //data tipe kita kirim berupa JSON
-                    success: function (data) { //jika berhasil 
-                        $('#form-tambah-edit').trigger("reset"); //form reset
-                        $('#tambah-edit-modal').modal('hide'); //modal hide
-                        $('#tombol-simpan').html('Simpan'); //tombol simpan
-                        var oTable = $('#table_user').dataTable(); //inialisasi datatable
-                        oTable.fnDraw(false); //reset datatable
-                        iziToast.success({ //tampilkan iziToast dengan notif data berhasil disimpan pada posisi kanan bawah
+                        .serialize(), 
+                    url: "{{ route('data-user.store') }}",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#form-tambah-edit').trigger("reset");
+                        $('#tambah-edit-modal').modal('hide');
+                        $('#tombol-simpan').html('Simpan');
+                        var oTable = $('#table_user').dataTable();
+                        oTable.fnDraw(false);
+                        iziToast.success({
                             title: 'Data Berhasil Disimpan',
                             message: '{{ Session(' success ')}}',
                             position: 'bottomRight'
                         });
                     },
-                    error: function (data) { //jika error tampilkan error pada console
+                    error: function (data) {
                         console.log('Error:', data);
                         $('#tombol-simpan').html('Simpan');
                     }
@@ -221,16 +217,14 @@
         })
     }
 
-    //TOMBOL EDIT DATA PER PEGAWAI DAN TAMPIKAN DATA BERDASARKAN ID PEGAWAI KE MODAL
-    //ketika class edit-post yang ada pada tag body di klik maka
+    // EDIT DATA
     $('body').on('click', '.edit-post', function () {
         var data_id = $(this).data('id');
         $.get('data-user/' + data_id + '/edit', function (data) {
             $('#modal-judul').html("Edit Post");
             $('#tombol-simpan').val("edit-post");
             $('#tambah-edit-modal').modal('show');
-
-            //set value masing-masing id berdasarkan data yg diperoleh dari ajax get request diatas               
+              
             $('#id').val(data.id);
             $('#name').val(data.name);
             $('#email').val(data.email);
@@ -239,28 +233,27 @@
         })
     });
 
-    //jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka
+    // TOMBOL DELETE
     $(document).on('click', '.delete', function () {
         dataId = $(this).attr('id');
         $('#konfirmasi-modal').modal('show');
     });
 
-    //jika tombol hapus pada modal konfirmasi di klik maka
     $('#tombol-hapus').click(function () {
         $.ajax({
 
-            url: "data-user/" + dataId, //eksekusi ajax ke url ini
+            url: "data-user/" + dataId,
             type: 'delete',
             beforeSend: function () {
-                $('#tombol-hapus').text('Hapus Data'); //set text untuk tombol hapus
+                $('#tombol-hapus').text('Hapus Data');
             },
-            success: function (data) { //jika sukses
+            success: function (data) {
                 setTimeout(function () {
-                    $('#konfirmasi-modal').modal('hide'); //sembunyikan konfirmasi modal
+                    $('#konfirmasi-modal').modal('hide');
                     var oTable = $('#table_user').dataTable();
-                    oTable.fnDraw(false); //reset datatable
+                    oTable.fnDraw(false);
                 });
-                iziToast.warning({ //tampilkan izitoast warning
+                iziToast.warning({
                     title: 'Data Berhasil Dihapus',
                     message: '{{ Session('
                     delete ')}}',
@@ -268,22 +261,6 @@
                 });
             }
         })
-    });
-
-
-    /* UNTUK TOGGLE ARSIP */
-    $('.toggle-tesTerjadwal').change(function(){
-        var is_active = $(this).prop('checked') == true ? 1 : 0;
-        var id = $(this).data('id');
-        $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "/changeStatusTes",
-        data: {'is_active':is_active,'id':id},
-        success: function(data){
-            console.log("Success")
-        }
-        });
     });
 
 </script>
