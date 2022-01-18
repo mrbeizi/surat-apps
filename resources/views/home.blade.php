@@ -2,7 +2,7 @@
 @section('title','Dashboard')
 @section('content')
 <div class="row mt-2 mb-2">
-    <div class="col-sm-12 position-relative p-4">
+    <div class="col-sm-12 position-relative p-2">
         <h1 class="display-1 text-truncate tebel-sedang judul1">{{Auth::user()->name}}</h1>
         <h1 class="display-1 text-truncate tebel-sedang judul2">Welcome</h1>
         <div class="hr"></div>

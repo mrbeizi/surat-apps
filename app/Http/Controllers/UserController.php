@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use Session;
-
+use DataTables;
 class UserController extends Controller
 {
     public function index(Request $request)

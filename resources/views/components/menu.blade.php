@@ -18,7 +18,7 @@
                     <a class="nav-link" href="#">Surat Keluar</a>
                   </li>                  
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Pengaturan</a>
+                    <a class="nav-link" href="{{route('data-user.index')}}">Pengaturan</a>
                   </li>                  
                 </ul>
                 <form class="d-flex">
