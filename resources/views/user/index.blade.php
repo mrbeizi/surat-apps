@@ -2,18 +2,8 @@
 @section('title','Pengaturan')
 @section('content')
 
-<div class="row">
-    <div class="col-sm-3">
-        <div class="card">
-        <div class="card-body">
-            <div class="mx-auto d-block">
-            <h5 class="text-sm-center mt-2 mb-1">{{Auth::user()->name}}</h5>
-            <div class="location text-sm-center designation text-muted" style="text-transform: uppercase;letter-spacing: 1px;"><i class="fa fa-smile"></i> {{Auth::user()->level}}</div>
-            </div>
-        </div>
-        </div>
-    </div> 
-    <div class="col-sm-9">
+<div class="row"> 
+    <div class="col-sm-12 mt-2">
         <div class="card">            
             <div class="card-body">
                 <!-- MULAI TOMBOL TAMBAH -->

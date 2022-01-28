@@ -18,14 +18,21 @@
                     <a class="nav-link" href="#">Surat Keluar</a>
                   </li>                  
                   <li class="nav-item">
-                    <a class="nav-link" href="{{route('data-user.index')}}">Pengaturan</a>
+                    <a class="nav-link" href="#">Disposisi</a>
+                  </li>                  
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-target="#menuDropdown" data-toggle="dropdown">Pengaturan</a>
+                    <ul class="dropdown-menu dropdown-menu-dark" id="menuDropdown">
+                      <li><a class="dropdown-item" href="#">Instansi</a></li>
+                      <li><a class="dropdown-item" href="{{route('data-user.index')}}">User</a></li>
+                    </ul>
                   </li>                  
                 </ul>
-                <form class="d-flex">
+                {{-- <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-                </div>
+                </form> --}}
+                </div>              
                 <div class="user-area dropdown float-right">
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
