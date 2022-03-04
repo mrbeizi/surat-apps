@@ -12,7 +12,7 @@
                     <a class="nav-link" aria-current="page" href="{{route('home')}}">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Surat Masuk</a>
+                    <a class="nav-link" href="{{route('data-inbox.index')}}">Surat Masuk</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Surat Keluar</a>
@@ -24,6 +24,7 @@
                     <a class="nav-link dropdown-toggle" href="#" data-target="#menuDropdown" data-toggle="dropdown">Pengaturan</a>
                     <ul class="dropdown-menu dropdown-menu-dark" id="menuDropdown">
                       <li><a class="dropdown-item" href="#">Instansi</a></li>
+                      <li><a class="dropdown-item" href="{{route('data-kategori.index')}}">Kategori</a></li>
                       <li><a class="dropdown-item" href="{{route('data-user.index')}}">User</a></li>
                     </ul>
                   </li>                  
