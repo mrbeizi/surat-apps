@@ -15,6 +15,7 @@ class CreateInboxesTable extends Migration
     {
         Schema::create('inboxes', function (Blueprint $table) {
             $table->increments('id');
+            $table->datetime('tgl_surat');
             $table->string('title');
             $table->string('no_surat');
             $table->unsignedInteger('id_kategori');

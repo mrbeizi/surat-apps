@@ -15,9 +15,10 @@
                     <thead>
                         <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Level</th>
+                        <th>TGL Surat</th>
+                        <th>Judul</th>
+                        <th>No Surat</th>
+                        <th>Kategori</th>
                         <th>Aksi</th>
                         </tr>
                     </thead>
@@ -42,35 +43,37 @@
                                     <input type="hidden" name="id" id="id">
 
                                     <div class="form-group">
-                                        <label for="name" class="col-sm-12 control-label">Nama Pengguna</label>
+                                        <label class="control-label col-sm-12" for="tgl_surat">Tanggal Surat</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                value="" required>
+                                        <input class="form-control form-control-sm tanggal" data-date-format="yyyy-mm-dd" name="tgl_surat" placeholder="yyyy-mm-dd" type="text"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="name" class="col-sm-12 control-label">E-mail</label>
+                                        <label for="name" class="col-sm-12 control-label">Judul Surat</label>
                                         <div class="col-sm-12">
-                                            <input type="email" class="form-control" id="email" name="email" value=""
+                                            <input type="text" class="form-control" id="title" name="title" value=""
                                                 required>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="password" class="col-sm-12 control-label">Password</label>
+                                        <label for="name" class="col-sm-12 control-label">No Surat</label>
                                         <div class="col-sm-12">
-                                            <input type="password" class="form-control" id="password" name="password" value="" required>
+                                            <input type="text" class="form-control" id="no_surat" name="no_surat" value=""
+                                                required>
                                         </div>
                                     </div>
+                                    
 
                                     <div class="form-group">
-                                        <label for="level" class="col-sm-12 control-label">Level</label>
+                                        <label for="id_kategori" class="col-sm-12 control-label">Kategori</label>
                                         <div class="col-sm-12">
-                                            <select name="level" id="level" class="form-control required">
-                                                <option value="">Level Pengguna</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="user">User</option>
+                                            <select name="id_kategori" id="id_kategori" class="form-control required">
+                                                <option value="" readonly>- Pilih-</option>                                   
+                                                @foreach($datas as $item)                                 
+                                                <option value="{{$item->id}}">{{$item->nama_kategori}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -104,7 +107,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Jika menghapus user, maka data user tersebut hilang selamanya, apakah anda yakin?</p>
+                        <p>Jika menghapus data ini, maka data tersebut hilang selamanya, apakah anda yakin?</p>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -138,7 +141,7 @@
         $('#button-simpan').val("create-post");
         $('#id').val('');
         $('#form-tambah-edit').trigger("reset");
-        $('#modal-judul').html("Tambah User Baru");
+        $('#modal-judul').html("Tambah Surat");
         $('#tambah-edit-modal').modal('show');
     });
 
@@ -148,7 +151,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('data-user.index') }}",
+                url: "{{ route('data-inbox.index') }}",
                 type: 'GET'
             },
             language: {
@@ -162,9 +165,10 @@
                     return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 }, 
-                {data: 'name',name: 'name'},
-                {data: 'email',name: 'email'},
-                {data: 'level',name: 'level'},
+                {data: 'tgl_surat',name: 'tgl_surat'},
+                {data: 'title',name: 'title'},
+                {data: 'no_surat',name: 'no_surat'},
+                {data: 'nama_kategori',name: 'nama_kategori'},
                 {data: 'action',name: 'action'},
             ],
             order: [
@@ -183,7 +187,7 @@
                 $.ajax({
                     data: $('#form-tambah-edit')
                         .serialize(), 
-                    url: "{{ route('data-user.store') }}",
+                    url: "{{ route('data-inbox.store') }}",
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
@@ -210,16 +214,16 @@
     // EDIT DATA
     $('body').on('click', '.edit-post', function () {
         var data_id = $(this).data('id');
-        $.get('data-user/' + data_id + '/edit', function (data) {
-            $('#modal-judul').html("Edit Post");
+        $.get('data-inbox/' + data_id + '/edit', function (data) {
+            $('#modal-judul').html("Edit Surat Masuk");
             $('#tombol-simpan').val("edit-post");
             $('#tambah-edit-modal').modal('show');
               
             $('#id').val(data.id);
-            $('#name').val(data.name);
-            $('#email').val(data.email);
-            $('#level').val(data.level);
-            $('#password').val(data.password);
+            $('#tgl_surat').val(data.tgl_surat);
+            $('#title').val(data.title);
+            $('#no_surat').val(data.no_surat);
+            $('#id_kategori').val(data.id_kategori);
         })
     });
 
@@ -232,7 +236,7 @@
     $('#tombol-hapus').click(function () {
         $.ajax({
 
-            url: "data-user/" + dataId,
+            url: "data-inbox/" + dataId,
             type: 'delete',
             beforeSend: function () {
                 $('#tombol-hapus').text('Hapus Data');
@@ -251,6 +255,16 @@
                 });
             }
         })
+    });
+
+    // FORMAT TANGGAL
+    jQuery(document).ready(function($) { 
+        $('.tanggal').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: new Date(),
+        todayHighlight: true,
+        autoclose:true
+        });   
     });
 
 </script>

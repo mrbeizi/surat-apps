@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inbox extends Model
 {
+    protected $table = "inboxes";
     protected $guarded = [];
 }
