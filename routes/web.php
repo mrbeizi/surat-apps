@@ -22,4 +22,6 @@ Auth::routes();
 Route::group(['middleware'=>'auth'],function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('data-user', 'UserController');
+    Route::resource('data-kategori', 'KategoriController');
+    Route::resource('data-inbox', 'InboxController');
 });
