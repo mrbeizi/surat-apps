@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                         <th>#</th>
-                        <th>Name</th>
+                        <th>Nama Kategori</th>
                         <th>Aksi</th>
                         </tr>
                     </thead>
