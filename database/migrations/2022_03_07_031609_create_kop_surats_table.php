@@ -14,7 +14,16 @@ class CreateKopSuratsTable extends Migration
     public function up()
     {
         Schema::create('kop_surats', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->unsignedInteger('id_kategori');
+            $table->foreign('id_kategori')->references('id')->on('kategoris');
+            $table->string('logo_surat');
+            $table->string('judul');
+            $table->string('alamat');
+            $table->string('telp');
+            $table->string('email');
+            $table->string('fax')->nullable;
+            $table->string('kode_pos')->nullable;
             $table->timestamps();
         });
     }
