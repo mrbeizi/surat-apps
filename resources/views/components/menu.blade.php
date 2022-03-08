@@ -21,10 +21,11 @@
                     <a class="nav-link" href="#">Disposisi</a>
                   </li>                  
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-target="#menuDropdown" data-toggle="dropdown">Pengaturan</a>
+                    <a class="nav-link dropdown-toggle" href="#" data-target="#menuDropdown" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
                     <ul class="dropdown-menu dropdown-menu-dark" id="menuDropdown">
                       <li><a class="dropdown-item" href="#">Instansi</a></li>
                       <li><a class="dropdown-item" href="{{route('data-kategori.index')}}">Kategori</a></li>
+                      <li><a class="dropdown-item" href="{{route('data-kop-surat.index')}}">Kop Surat</a></li>
                       <li><a class="dropdown-item" href="{{route('data-user.index')}}">User</a></li>
                     </ul>
                   </li>                  
