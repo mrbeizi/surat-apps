@@ -32,4 +32,22 @@ class KopSuratController extends Controller
         $datas = Kategori::all();
         return view('kop-surat.index', compact('datas'));
     }
+
+    public function store(Request $request)
+    {
+        $id = $request->id;        
+        $post   =   KopSurat::updateOrCreate(['id' => $id],
+                    [
+                        'id_kategori'   => $request->id_kategori,
+                        'logo_surat'    => $request->logo_surat,
+                        'judul'         => $request->judul,
+                        'alamat'        => $request->alamat,
+                        'telp'          => $request->telp,
+                        'email'         => $request->email,
+                        'fax'           => $request-faxl,
+                        'kode_pos'      => $request->password,
+                    ]); 
+
+        return response()->json($post);
+    }
 }
