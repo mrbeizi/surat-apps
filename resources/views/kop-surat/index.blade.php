@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">Logo/Gambar</label>
                                         <div class="col-sm-12">
-                                            <input id="file-5" name="image" class="file" type="file" multiple data-preview-file-type="any" data-upload-url="#">
+                                            <input id="logo_surat" name="logo_surat" class="file" type="file" multiple data-preview-file-type="any" data-upload-url="#">
                                         </div>
                                     </div>
 
@@ -222,11 +222,14 @@
         $("#form-tambah-edit").validate({
             submitHandler: function (form) {
                 var actionType = $('#tombol-simpan').val();
+                var formData = new FormData($("#form-tambah-edit")[0]);
                 $('#tombol-simpan').html('Sending..');
 
                 $.ajax({
-                    data: $('#form-tambah-edit')
-                        .serialize(), 
+                    // data: $('#form-tambah-edit').serialize(), 
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     url: "{{ route('data-kop-surat.store') }}",
                     type: "POST",
                     dataType: 'json',
