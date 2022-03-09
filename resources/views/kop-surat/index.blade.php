@@ -11,7 +11,7 @@
                 <br><br>
                 <!-- AKHIR TOMBOL -->
                 <!-- MULAI TABLE -->
-                <table class="table table-striped table-bordered table-sm" id="table_user">
+                <table class="table table-striped table-bordered table-sm" id="table_kop">
                     <thead>
                         <tr>
                         <th>#</th>
@@ -185,7 +185,7 @@
 
     // DATATABLE
     $(document).ready(function () {
-        $('#table_user').DataTable({
+        $('#table_kop').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -227,14 +227,14 @@
                 $.ajax({
                     data: $('#form-tambah-edit')
                         .serialize(), 
-                    url: "{{ route('data-user.store') }}",
+                    url: "{{ route('data-kop-surat.store') }}",
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
                         $('#form-tambah-edit').trigger("reset");
                         $('#tambah-edit-modal').modal('hide');
                         $('#tombol-simpan').html('Simpan');
-                        var oTable = $('#table_user').dataTable();
+                        var oTable = $('#table_kop').dataTable();
                         oTable.fnDraw(false);
                         iziToast.success({
                             title: 'Data Berhasil Disimpan',
@@ -254,16 +254,19 @@
     // EDIT DATA
     $('body').on('click', '.edit-post', function () {
         var data_id = $(this).data('id');
-        $.get('data-user/' + data_id + '/edit', function (data) {
+        $.get('data-kop-surat/' + data_id + '/edit', function (data) {
             $('#modal-judul').html("Edit Post");
             $('#tombol-simpan').val("edit-post");
             $('#tambah-edit-modal').modal('show');
               
             $('#id').val(data.id);
-            $('#name').val(data.name);
+            $('#id_kategori').val(data.id_kategori);
+            $('#logo_surat').val(data.logo_surat);
+            $('#judul').val(data.judul);
+            $('#alamat').val(data.alamat);
             $('#email').val(data.email);
-            $('#level').val(data.level);
-            $('#password').val(data.password);
+            $('#fax').val(data.fax);
+            $('#kode_pos').val(data.kode_pos);
         })
     });
 
@@ -276,7 +279,7 @@
     $('#tombol-hapus').click(function () {
         $.ajax({
 
-            url: "data-user/" + dataId,
+            url: "data-kop-surat/" + dataId,
             type: 'delete',
             beforeSend: function () {
                 $('#tombol-hapus').text('Hapus Data');
@@ -284,7 +287,7 @@
             success: function (data) {
                 setTimeout(function () {
                     $('#konfirmasi-modal').modal('hide');
-                    var oTable = $('#table_user').dataTable();
+                    var oTable = $('#table_kop').dataTable();
                     oTable.fnDraw(false);
                 });
                 iziToast.warning({
