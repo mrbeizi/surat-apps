@@ -22,8 +22,8 @@ class CreateKopSuratsTable extends Migration
             $table->string('alamat');
             $table->string('telp');
             $table->string('email');
-            $table->string('fax')->nullable;
-            $table->string('kode_pos')->nullable;
+            $table->string('fax')->nullable();
+            $table->string('kode_pos')->nullable();
             $table->timestamps();
         });
     }
