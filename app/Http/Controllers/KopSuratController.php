@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\KopSurat;
 use App\Kategori;
+use Validator;
 use Auth;
 use Session;
 use DataTables;
@@ -34,20 +36,30 @@ class KopSuratController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $id = $request->id;        
-        $post   =   KopSurat::updateOrCreate(['id' => $id],
-                    [
-                        'id_kategori'   => $request->id_kategori,
-                        'logo_surat'    => $request->logo_surat,
-                        'judul'         => $request->judul,
-                        'alamat'        => $request->alamat,
-                        'telp'          => $request->telp,
-                        'email'         => $request->email,
-                        'fax'           => $request-faxl,
-                        'kode_pos'      => $request->password,
-                    ]); 
+    {    
+        $id = $request->id;
+        if($request->has('logo_surat'))
+        {
+            $image   = $request->file('logo_surat');
+            $reImage = time().'.'.$image->getClientOriginalExtension();
+            $dest    = public_path('/images/uploads');
+            $image->move($dest,$reImage);
+            
+            // save Data
+            $post = KopSurat::updateOrCreate(['id' => $id],
+                [
+                    'id_kategori'   => $request->id_kategori,
+                    'logo_surat'    => $reImage,
+                    'judul'         => $request->judul,
+                    'alamat'        => $request->alamat,
+                    'telp'          => $request->telp,
+                    'email'         => $request->email,
+                    'fax'           => $request->fax,
+                    'kode_pos'      => $request->kode_pos,
+                ]); 
 
-        return response()->json($post);
+                return response()->json($post);
+            
+        }         
     }
 }
