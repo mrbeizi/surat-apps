@@ -145,7 +145,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Jika menghapus user, maka data user tersebut hilang selamanya, apakah anda yakin?</p>
+                        <p>Jika menghapus data ini, maka data tersebut hilang selamanya, apakah anda yakin?</p>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
