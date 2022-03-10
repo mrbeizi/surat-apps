@@ -65,4 +65,10 @@ class KopSuratController extends Controller
             
         }         
     }
+
+    public function destroy($id)
+    {
+        $post = KopSurat::where('id',$id)->delete();     
+        return response()->json($post);
+    }
 }
