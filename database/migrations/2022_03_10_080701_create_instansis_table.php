@@ -14,7 +14,11 @@ class CreateInstansisTable extends Migration
     public function up()
     {
         Schema::create('instansis', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->string('nama_instansi');
+            $table->string('alamat');
+            $table->string('email');
+            $table->string('telp');
             $table->timestamps();
         });
     }
