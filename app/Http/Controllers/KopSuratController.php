@@ -21,15 +21,18 @@ class KopSuratController extends Controller
             ->get();        
         if($request->ajax()){
             return datatables()->of($list_kop_surat)
-            ->addColumn('action', function($data){
-                    $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->kop_id.'" data-original-title="Edit" class="edit btn btn-outline-success btn-sm edit-post"><i class="fa fa-pen"></i></a>';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<button type="button" name="delete" id="'.$data->kop_id.'" class="delete btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>';
-                    return $button;
-                })
-                ->rawColumns(['action'])
-                ->addIndexColumn(true)
-                ->make(true);
+            ->addColumn('view_logo', function($data){
+                $button = '<button type="button" name="view" id="'.$data->kop_id.'" class="view btn btn-outline-warning btn-sm"><img src="'.public_path().'/images/uploads/.'.$data->logo_surat.'"/><i class="fa fa-eye"></i> View</button>';
+                return $button;                                                        
+            })->addColumn('action', function($data){
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->kop_id.'" data-original-title="Edit" class="edit btn btn-outline-success btn-sm edit-post"><i class="fa fa-pen"></i></a>';
+                $button .= '&nbsp;&nbsp;';
+                $button .= '<button type="button" name="delete" id="'.$data->kop_id.'" class="delete btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>';
+                return $button;
+            })
+            ->rawColumns(['view_logo','action'])
+            ->addIndexColumn(true)
+            ->make(true);
         }  
         $datas = Kategori::all();
         return view('kop-surat.index', compact('datas'));

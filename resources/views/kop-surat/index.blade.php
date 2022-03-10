@@ -16,7 +16,7 @@
                         <tr>
                         <th>#</th>
                         <th>Kategori</th>
-                        <th>Logo</th>
+                        <th>Logo / Gambar</th>
                         <th>Judul</th>
                         <th>Alamat</th>
                         <th>Telp</th>
@@ -204,7 +204,7 @@
                     }
                 }, 
                 {data: 'nama_kategori',name: 'nama_kategori'},
-                {data: 'logo_surat',name: 'logo_surat'},
+                {data: 'view_logo',name: 'view_logo'},
                 {data: 'judul',name: 'judul'},
                 {data: 'alamat',name: 'alamat'},
                 {data: 'telp',name: 'telp'},
