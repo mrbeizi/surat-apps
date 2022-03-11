@@ -47,7 +47,7 @@
                                     <div class="form-group">
                                         <label for="id_kategori" class="col-sm-12 control-label">Kategori</label>
                                         <div class="col-sm-12">
-                                            <select name="id_kategori" id="id_kategori" class="form-control required">
+                                            <select name="id_kategori" id="id_kategori" class="form-control">
                                                 <option value="" readonly>- Pilih-</option>                                   
                                                 @foreach($datas as $item)                                 
                                                 <option value="{{$item->id}}">{{$item->nama_kategori}}</option>
@@ -59,15 +59,15 @@
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">Logo/Gambar</label>
                                         <div class="col-sm-12">
-                                            <input id="logo_surat" name="logo_surat" class="file" type="file" multiple data-preview-file-type="any" data-upload-url="#">
+                                            <input id="logo_surat" name="logo_surat" class="file" type="file" multiple data-preview-file-type="any" value="" data-upload-url="#">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">Judul</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="judul" name="judul" value=""
-                                                required>
+                                            <input type="text" class="form-control" id="judul" name="judul" value="">
+                                            <span class="text-danger" id="judulErrorMsg"></span>
                                         </div>
                                     </div>
 
@@ -75,7 +75,8 @@
                                         <label for="name" class="col-sm-12 control-label">Alamat</label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="alamat" name="alamat" value=""
-                                                required>
+                                                >
+                                            <span class="text-danger" id="alamatErrorMsg"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +86,8 @@
                                         <label for="name" class="col-sm-12 control-label">Telp</label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="telp" name="telp" value=""
-                                                required>
+                                                >
+                                            <span class="text-danger" id="telpErrorMsg"></span>
                                         </div>
                                     </div>
 
@@ -93,7 +95,8 @@
                                         <label for="name" class="col-sm-12 control-label">Email</label>
                                         <div class="col-sm-12">
                                             <input type="email" class="form-control" id="email" name="email" value=""
-                                                required>
+                                                >
+                                            <span class="text-danger" id="emailErrorMsg"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +106,8 @@
                                         <label for="name" class="col-sm-12 control-label">Fax</label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="fax" name="fax" value=""
-                                                required>
+                                                >
+                                            <span class="text-danger" id="faxErrorMsg"></span>
                                         </div>
                                     </div> 
 
@@ -111,7 +115,8 @@
                                         <label for="name" class="col-sm-12 control-label">Kode Pos</label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="kode_pos" name="kode_pos" value=""
-                                                required>
+                                                >
+                                            <span class="text-danger" id="kodeposErrorMsg"></span>
                                         </div>
                                     </div>  
                                 </div>
@@ -245,9 +250,18 @@
                             position: 'bottomRight'
                         });
                     },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#tombol-simpan').html('Simpan');
+                    // error: function (data) {
+                    //     console.log('Error:', data);
+                    //     $('#tombol-simpan').html('Simpan');
+                    // }
+                    
+                    error: function(response) {
+                        $('#judulErrorMsg').text(response.responseJSON.errors.judul);
+                        $('#alamatErrorMsg').text(response.responseJSON.errors.alamat);
+                        $('#telpErrorMsg').text(response.responseJSON.errors.telp);
+                        $('#emailErrorMsg').text(response.responseJSON.errors.email);
+                        $('#faxErrorMsg').text(response.responseJSON.errors.fax);
+                        $('#kodeposErrorMsg').text(response.responseJSON.errors.kodepos);
                     }
                 });
             }
@@ -264,9 +278,10 @@
               
             $('#id').val(data.id);
             $('#id_kategori').val(data.id_kategori);
-            $('#logo_surat').val(data.logo_surat);
+            // $('#logo_surat').val(data.logo_surat);
             $('#judul').val(data.judul);
             $('#alamat').val(data.alamat);
+            $('#telp').val(data.telp);
             $('#email').val(data.email);
             $('#fax').val(data.fax);
             $('#kode_pos').val(data.kode_pos);
