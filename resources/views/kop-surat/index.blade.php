@@ -60,6 +60,7 @@
                                         <label for="name" class="col-sm-12 control-label">Logo/Gambar</label>
                                         <div class="col-sm-12">
                                             <input id="logo_surat" name="logo_surat" class="file" type="file" multiple data-preview-file-type="any" value="" data-upload-url="#">
+                                            <span class="text-danger" id="logosuratErrorMsg"></span>
                                         </div>
                                     </div>
 
@@ -256,6 +257,7 @@
                     // }
                     
                     error: function(response) {
+                        $('#logosuratErrorMsg').text(response.responseJSON.errors.logo_surat);
                         $('#judulErrorMsg').text(response.responseJSON.errors.judul);
                         $('#alamatErrorMsg').text(response.responseJSON.errors.alamat);
                         $('#telpErrorMsg').text(response.responseJSON.errors.telp);

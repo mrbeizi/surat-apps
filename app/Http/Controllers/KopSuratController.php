@@ -41,12 +41,21 @@ class KopSuratController extends Controller
     public function store(Request $request)
     {    
         $request->validate([
-            'logo_surat'    => 'required',
-            'judul'         => 'required',
-            'alamat'        => 'required',
+            'logo_surat' => 'required|mimes:jpeg,bmp,png',
+            'judul'      => 'required',
+            'alamat'     => 'required',
             'telp'       => 'required',
-            'email'       => 'required|email',
-            'fax'       => 'required',
+            'email'      => 'required|email|unique:kop_surats',
+            'fax'        => 'required',
+        ],[
+            'logo_surat.required' => 'Anda belum mengunggah gambar',
+            'logo_surat.mimes'    => 'file harus berekstensi .jpg .jpeg .bmp .png',
+            'judul.required'      => 'Anda belum menginputkan judul surat',
+            'alamat.required'     => 'Anda belum menginputkan alamat',
+            'telp.required'       => 'Anda belum menginputkan telp',
+            'email.required'      => 'Anda belum menginputkan email',
+            'email.unique'        => 'Email Anda sudah terdaftar',
+            'fax.required'        => 'Anda belum menginputkan nomor fax'
         ]);
 
         $id = $request->id;
