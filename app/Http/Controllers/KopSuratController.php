@@ -40,6 +40,15 @@ class KopSuratController extends Controller
 
     public function store(Request $request)
     {    
+        $request->validate([
+            'logo_surat'    => 'required',
+            'judul'         => 'required',
+            'alamat'        => 'required',
+            'telp'       => 'required',
+            'email'       => 'required|email',
+            'fax'       => 'required',
+        ]);
+
         $id = $request->id;
         if($request->has('logo_surat'))
         {
@@ -64,6 +73,14 @@ class KopSuratController extends Controller
                 return response()->json($post);
             
         }         
+    }
+
+    public function edit($id)
+    {
+        $where = array('id' => $id);
+        $post  = KopSurat::where($where)->first();
+     
+        return response()->json($post);
     }
 
     public function destroy($id)
