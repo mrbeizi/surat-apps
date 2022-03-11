@@ -22,7 +22,7 @@ class KopSuratController extends Controller
         if($request->ajax()){
             return datatables()->of($list_kop_surat)
             ->addColumn('view_logo', function($data){
-                $button = '<button type="button" name="view" id="'.$data->kop_id.'" class="view btn btn-outline-warning btn-sm"><img src="'.public_path().'/images/uploads/'.$data->logo_surat.'"/><i class="fa fa-eye"></i> View</button>';
+                $button = '<button type="button" name="view" id="'.$data->kop_id.'" class="view btn btn-outline-primary btn-sm"><a href="'.asset('/images/uploads/'.$data->logo_surat.'').'" target="_blank"><img height="25px;" src="'.asset('/images/uploads/'.$data->logo_surat.'').'" /> <i class="fa fa-eye"></i> View</a></button>';
                 return $button;                                                        
             })->addColumn('action', function($data){
                 $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->kop_id.'" data-original-title="Edit" class="edit btn btn-outline-success btn-sm edit-post"><i class="fa fa-pen"></i></a>';
