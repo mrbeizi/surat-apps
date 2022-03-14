@@ -8,15 +8,17 @@
             <div class="card-body">
                 <!-- MULAI TOMBOL TAMBAH -->
                 <a href="javascript:void(0)" class="btn btn-outline-info btn-sm" id="tombol-tambah"><i class="fa fa-plus"></i> Add Category</a>
+               
                 <br><br>
                 <!-- AKHIR TOMBOL -->
                 <!-- MULAI TABLE -->
                 <table class="table table-striped table-bordered table-sm" id="table_kategori">
                     <thead>
                         <tr>
-                        <th>#</th>
-                        <th>Nama Kategori</th>
-                        <th>Aksi</th>
+                            <th><input type="checkbox" name="main_checkbox"><label></label></th>
+                            <th>#</th>
+                            <th>Nama Kategori</th>
+                            <th>Aksi  <button class="btn btn-sm btn-danger d-none" id="deleteAll"> Hapus Semua</button></th>
                         </tr>
                     </thead>
                 </table>
@@ -129,13 +131,14 @@
                 "searchPlaceholder": "",
             },
             columns: [
+                {data: 'checkbox',name: 'checkbox', orderable:false, searchable:false},
                 {data: null,sortable:false,
                     render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                     }
-                }, 
+                },                
                 {data: 'nama_kategori',name: 'nama_kategori'},
-                {data: 'action',name: 'action'},
+                {data: 'action',name: 'action', orderable:false, searchable:false},
             ],
             order: [
                 [0, 'asc']
@@ -212,12 +215,82 @@
                 });
                 iziToast.warning({
                     title: 'Data Berhasil Dihapus',
-                    message: '{{ Session('
-                    delete ')}}',
+                    message: '{{ Session('delete')}}',
                     position: 'bottomRight'
                 });
             }
         })
+    });
+
+    $(document).on('click','input[name="main_checkbox"]', function(){
+        if(this.checked){
+            $('input[name="kategori_checkbox"]').each(function(){
+                this.checked = true;
+            });
+        }else{
+            $('input[name="kategori_checkbox"]').each(function(){
+                this.checked = false;
+            });
+        }
+        toggledeleteAll();
+    });
+
+    $(document).on('change','input[name="kategori_checkbox"]', function(){
+        if($('input[name="kategori_checkbox"]').length == $('input[name="kategori_checkbox"]:checked').length){
+            $('input[name="main_checkbox"]').prop('checked', true);
+        }else{
+            $('input[name="main_checkbox"]').prop('checked', false);
+        }
+        toggledeleteAll();
+    });
+
+    function toggledeleteAll(){
+        if($('input[name="kategori_checkbox"]:checked').length > 0){
+            $('button#deleteAll').text('Delete ('+$('input[name="kategori_checkbox"]:checked').length+')').removeClass('d-none');
+        }else{
+            $('button#deleteAll').addClass('d-none');
+        }
+    }
+
+    $(document).on('click','button#deleteAll', function(){
+        var checkedKategori = [];
+        $('input[name="kategori_checkbox"]:checked').each(function(){
+            checkedKategori.push($(this).data('id'));
+        });
+        var url = '{{ route("deleteSelectedKategori") }}';
+        if(checkedKategori.length > 0){
+            swal({
+                title: 'Are you sure?',
+                html: 'You want to delete <b>('+checkedKategori.length+')</b> kategori',
+                showCancelButton: true,
+                showCloseButton: true,
+                confirmButtonText: 'Yes, delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#556ee6',
+                cancelButtonColor: '#d33',
+                width: 500,
+                allowOutsideClick:false
+            }).then(function(result){
+                // alert(checkedKategori)
+                if(checkedKategori != null){
+                    $.post(url,{id:checkedKategori}, function(data){
+                    }).done(function(data) {
+                        $('#table_kategori').DataTable().ajax.reload(null, true);
+                        switch (data.msg) {
+                        case "berhasil":
+                            toastr.success('Data Kategori berhasil dihapus!');
+                            break;
+                        case "gagal":
+                            toastr.error('Gagal! Data ini masih digunakan!');
+                            break;
+                        case "ketiga":
+                            toastr.warning('Warning! Beberapa data tidak berhasil dihapus karena masih digunakan!');
+                            break;
+                        }
+                    });
+                }
+            })
+        }
     });
 
 </script>
