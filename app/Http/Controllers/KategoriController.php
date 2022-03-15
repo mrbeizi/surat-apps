@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Kategori;
 use Auth;
 use Session;
+use Validator;
 use DataTables;
 use Response;
 use App\Exceptions\InvalidOrderException;
@@ -36,6 +37,13 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_kategori' => 'required|unique:kategoris',
+        ],[
+            'nama_kategori.required' => 'Anda belum menginputkan nama kategori',
+            'nama_kategori.unique' => 'Nama kategori sudah ada'
+        ]);
+
         $id     = $request->id;        
         $post   =   Kategori::updateOrCreate(['id' => $id],
                     [
@@ -63,6 +71,7 @@ class KategoriController extends Controller
     {   
 
         //return response()->json(count($request->id));
+
         $g = 0;
         for ($i=0; $i < count($request->id); $i++) { 
             
@@ -90,7 +99,7 @@ class KategoriController extends Controller
 
         if (!empty($tes)) {
             if ($cek == 1) {
-                return Response::json(array('msg' => 'ketiga'), 200);
+                return Response::json(array('msg' => 'info'), 200);
             }elseif($cek == 0){
                 return Response::json(array('msg' => 'gagal'), 200);
             }else{
@@ -102,7 +111,11 @@ class KategoriController extends Controller
     
         return response()->json($tes);
 
-        /* Need Improvement */
+        /*
+        ----------------------
+         Need Improvement 
+        ----------------------
+        */
         
         // $id   = $request->id;
         // $post = Kategori::whereIn('id', $id)->delete();
@@ -110,7 +123,6 @@ class KategoriController extends Controller
         // if ($post) {
         //     return Response::json(array('msg' => 'berhasil'), 200);
         // }else{
-        //     //return response()->json('tes');
         //     return Response::json(array('msg' => 'gagal'), 200);
         // }
                

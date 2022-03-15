@@ -8,7 +8,7 @@
             <div class="card-body">
                 <!-- MULAI TOMBOL TAMBAH -->
                 <a href="javascript:void(0)" class="btn btn-outline-info btn-sm" id="tombol-tambah"><i class="fa fa-plus"></i> Add Category</a>
-               
+                <button class="btn btn-sm btn-danger d-none" id="deleteAll"> Hapus Semua</button>
                 <br><br>
                 <!-- AKHIR TOMBOL -->
                 <!-- MULAI TABLE -->
@@ -18,7 +18,7 @@
                             <th><input type="checkbox" name="main_checkbox"><label></label></th>
                             <th>#</th>
                             <th>Nama Kategori</th>
-                            <th>Aksi  <button class="btn btn-sm btn-danger d-none" id="deleteAll"> Hapus Semua</button></th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -44,8 +44,10 @@
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">Nama Kategori</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="" required>
+                                            @error('nama_kategori')
+                                                <div class="invalid-feedback">{{$message}}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -154,8 +156,7 @@
                 $('#tombol-simpan').html('Sending..');
 
                 $.ajax({
-                    data: $('#form-tambah-edit')
-                        .serialize(), 
+                    data: $('#form-tambah-edit').serialize(), 
                     url: "{{ route('data-kategori.store') }}",
                     type: "POST",
                     dataType: 'json',
@@ -172,8 +173,12 @@
                         });
                     },
                     error: function (data) {
-                        console.log('Error:', data);
-                        $('#tombol-simpan').html('Simpan');
+                        $('#tambah-edit-modal').modal('hide');
+                        iziToast.error({
+                            title: 'Data Gagal Disimpan',
+                            message: '{{ Session(' message ')}}',
+                            position: 'bottomRight'
+                        });
                     }
                 });
             }
@@ -215,6 +220,14 @@
                 });
                 iziToast.warning({
                     title: 'Data Berhasil Dihapus',
+                    message: '{{ Session('delete')}}',
+                    position: 'bottomRight'
+                });
+            },
+            error: function (data) {
+                $('#konfirmasi-modal').modal('hide');
+                iziToast.error({
+                    title: 'Data Gagal Dihapus',
                     message: '{{ Session('delete')}}',
                     position: 'bottomRight'
                 });
@@ -276,15 +289,25 @@
                     $.post(url,{id:checkedKategori}, function(data){
                     }).done(function(data) {
                         $('#table_kategori').DataTable().ajax.reload(null, true);
+                        $('button#deleteAll').addClass('d-none');
                         switch (data.msg) {
                         case "berhasil":
-                            toastr.success('Data Kategori berhasil dihapus!');
+                            iziToast.success({
+                                title: 'Data Kategori Berhasil Dihapus',
+                                position: 'bottomRight'
+                            });
                             break;
                         case "gagal":
-                            toastr.error('Gagal! Data ini masih digunakan!');
+                            iziToast.error({
+                                title: 'Gagal! Data ini masih digunakan!',
+                                position: 'bottomRight'
+                            });
                             break;
-                        case "ketiga":
-                            toastr.warning('Warning! Beberapa data tidak berhasil dihapus karena masih digunakan!');
+                        case "info":
+                            iziToast.warning({
+                                title: 'Warning! Beberapa data tidak berhasil dihapus karena masih digunakan!',
+                                position: 'bottomRight'
+                            });
                             break;
                         }
                     });
