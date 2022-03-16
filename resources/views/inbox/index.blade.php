@@ -45,23 +45,24 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-12" for="tgl_surat">Tanggal Surat</label>
                                         <div class="col-sm-12">
-                                        <input class="form-control form-control-sm tanggal" data-date-format="yyyy-mm-dd" name="tgl_surat" placeholder="yyyy-mm-dd" type="text"/>
+                                            <input class="form-control form-control-sm tanggal" data-date-format="yyyy-mm-dd" name="tgl_surat" placeholder="yyyy-mm-dd" type="text"/>
+                                            <span class="text-danger" id="tglsuratErrorMsg"></span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">Judul Surat</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="title" name="title" value=""
-                                                required>
+                                            <input type="text" class="form-control" id="title" name="title" value="">
+                                            <span class="text-danger" id="titleErrorMsg"></span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">No Surat</label>
                                         <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="no_surat" name="no_surat" value=""
-                                                required>
+                                            <input type="text" class="form-control" id="no_surat" name="no_surat" value="">
+                                            <span class="text-danger" id="nosuratErrorMsg"></span>
                                         </div>
                                     </div>
                                     
@@ -69,12 +70,13 @@
                                     <div class="form-group">
                                         <label for="id_kategori" class="col-sm-12 control-label">Kategori</label>
                                         <div class="col-sm-12">
-                                            <select name="id_kategori" id="id_kategori" class="form-control required">
+                                            <select name="id_kategori" id="id_kategori" class="form-control">
                                                 <option value="" readonly>- Pilih-</option>                                   
                                                 @foreach($datas as $item)                                 
                                                 <option value="{{$item->id}}">{{$item->nama_kategori}}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger" id="kategoriErrorMsg"></span>
                                         </div>
                                     </div>
 
@@ -185,12 +187,12 @@
                 $('#tombol-simpan').html('Sending..');
 
                 $.ajax({
-                    data: $('#form-tambah-edit')
-                        .serialize(), 
+                    data: $('#form-tambah-edit').serialize(), 
                     url: "{{ route('data-inbox.store') }}",
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
+                        $('#table_inbox').DataTable().ajax.reload(null, true);
                         $('#form-tambah-edit').trigger("reset");
                         $('#tambah-edit-modal').modal('hide');
                         $('#tombol-simpan').html('Simpan');
@@ -202,9 +204,16 @@
                             position: 'bottomRight'
                         });
                     },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#tombol-simpan').html('Simpan');
+                    error: function(response) {
+                        $('#tglsuratErrorMsg').text(response.responseJSON.errors.tgl_surat);
+                        $('#titleErrorMsg').text(response.responseJSON.errors.title);
+                        $('#nosuratErrorMsg').text(response.responseJSON.errors.no_surat);
+                        $('#kategoriErrorMsg').text(response.responseJSON.errors.id_kategori);
+                        iziToast.error({
+                            title: 'Data Gagal disimpan',
+                            message: '{{ Session('error')}}',
+                            position: 'bottomRight'
+                        });
                     }
                 });
             }
