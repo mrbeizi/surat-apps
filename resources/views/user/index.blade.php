@@ -243,10 +243,18 @@
                     var oTable = $('#table_user').dataTable();
                     oTable.fnDraw(false);
                 });
-                iziToast.warning({
+                iziToast.success({
                     title: 'Data Berhasil Dihapus',
                     message: '{{ Session('
                     delete ')}}',
+                    position: 'bottomRight'
+                });
+            },
+            error: function (data) {
+                $('#konfirmasi-modal').modal('hide');
+                iziToast.error({
+                    title: 'Anda tidak bisa menghapus akun Anda sendiri.',
+                    message: '{{ Session('delete')}}',
                     position: 'bottomRight'
                 });
             }

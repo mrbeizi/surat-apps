@@ -7,6 +7,8 @@ use App\User;
 use Auth;
 use Session;
 use DataTables;
+use RealRashid\SweetAlert\Facades\Alert;
+
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -52,7 +54,12 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $post = User::where('id',$id)->delete();     
+        if(Auth::user()->id != $id){
+            $post = User::where('id',$id)->delete();     
+        } else {
+            Session::flash('message', 'Akun anda sendiri tidak bisa dihapus!');
+            Session::flash('message_type', 'danger');
+        }
         return response()->json($post);
     }
 
