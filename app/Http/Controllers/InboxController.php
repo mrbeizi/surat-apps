@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Inbox;
 use App\Kategori;
 use Auth;
+use Validator;
 use Session;
 use DataTables;
 
@@ -35,6 +36,20 @@ class InboxController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title'       => 'required|unique:inboxes',
+            'no_surat'    => 'required',
+            'tgl_surat'   => 'required',
+            'id_kategori' => 'required',
+        ],[
+            'title.required'       => 'Anda belum menginputkan judul',
+            'title.unique'         => 'Judul sudah ada',
+            'no_surat.required'    => 'Anda belum menginputkan no surat',
+            'tgl_surat.required'   => 'Anda belum menginputkan tanggal surat',
+            'id_kategori.required' => 'Anda belum memilih kategori'
+
+        ]);
+
         $id     = $request->id;        
         $post   =   Inbox::updateOrCreate(['id' => $id],
                 [
