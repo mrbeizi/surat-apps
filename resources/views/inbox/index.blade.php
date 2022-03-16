@@ -8,12 +8,14 @@
             <div class="card-body">
                 <!-- MULAI TOMBOL TAMBAH -->
                 <a href="javascript:void(0)" class="btn btn-outline-info btn-sm" id="tombol-tambah"><i class="fa fa-plus"></i> Tambah Surat</a>
+                <button class="btn btn-sm btn-danger d-none" id="deleteAll"> Hapus Semua</button>
                 <br><br>
                 <!-- AKHIR TOMBOL -->
                 <!-- MULAI TABLE -->
                 <table class="table table-striped table-bordered table-sm" id="table_inbox">
                     <thead>
                         <tr>
+                        <th><input type="checkbox" name="main_checkbox"><label></label></th>
                         <th>#</th>
                         <th>TGL Surat</th>
                         <th>Judul</th>
@@ -162,6 +164,7 @@
                 "searchPlaceholder": "",
             },
             columns: [
+                {data: 'checkbox',name: 'checkbox', orderable:false, searchable:false},
                 {data: null,sortable:false,
                     render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -264,6 +267,80 @@
                 });
             }
         })
+    });
+
+    $(document).on('click','input[name="main_checkbox"]', function(){
+        if(this.checked){
+            $('input[name="inbox_checkbox"]').each(function(){
+                this.checked = true;
+            });
+        }else{
+            $('input[name="inbox_checkbox"]').each(function(){
+                this.checked = false;
+            });
+        }
+        toggledeleteAll();
+    });
+
+    $(document).on('change','input[name="inbox_checkbox"]', function(){
+        if($('input[name="inbox_checkbox"]').length == $('input[name="inbox_checkbox"]:checked').length){
+            $('input[name="main_checkbox"]').prop('checked', true);
+        }else{
+            $('input[name="main_checkbox"]').prop('checked', false);
+        }
+        toggledeleteAll();
+    });
+
+    function toggledeleteAll(){
+        if($('input[name="inbox_checkbox"]:checked').length > 0){
+            $('button#deleteAll').text('Delete ('+$('input[name="inbox_checkbox"]:checked').length+')').removeClass('d-none');
+        }else{
+            $('button#deleteAll').addClass('d-none');
+        }
+    }
+
+    $(document).on('click','button#deleteAll', function(){
+        var checkedInbox = [];
+        $('input[name="inbox_checkbox"]:checked').each(function(){
+            checkedInbox.push($(this).data('id'));
+        });
+        var url = '{{ route("deleteSelectedInbox") }}';
+        if(checkedInbox.length > 0){
+            swal({
+                title: 'Are you sure?',
+                html: 'You want to delete <b>('+checkedInbox.length+')</b> kategori',
+                showCancelButton: true,
+                showCloseButton: true,
+                confirmButtonText: 'Yes, delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#556ee6',
+                cancelButtonColor: '#d33',
+                width: 500,
+                allowOutsideClick:false
+            }).then(function(result){
+                if(checkedInbox != null){
+                    $.post(url,{id:checkedInbox}, function(data){
+                    }).done(function(data) {
+                        $('#table_inbox').DataTable().ajax.reload(null, true);
+                        $('button#deleteAll').addClass('d-none');
+                        switch (data.msg) {
+                        case "berhasil":
+                            iziToast.success({
+                                title: 'Data Berhasil Dihapus',
+                                position: 'bottomRight'
+                            });
+                            break;
+                        case "gagal":
+                            iziToast.error({
+                                title: 'Data gagal dihapus',
+                                position: 'bottomRight'
+                            });
+                            break;
+                        }
+                    });
+                }
+            })
+        }
     });
 
     // FORMAT TANGGAL

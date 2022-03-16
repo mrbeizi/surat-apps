@@ -28,4 +28,5 @@ Route::group(['middleware'=>'auth'],function(){
 
     /* Delete All Selected Row */
     Route::post('/deleteSelectedKategori','KategoriController@deleteAll')->name('deleteSelectedKategori');
+    Route::post('/deleteSelectedInbox','InboxController@deleteAll')->name('deleteSelectedInbox');
 });
