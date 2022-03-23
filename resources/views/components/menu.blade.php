@@ -2,7 +2,8 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light mt-3" style="background-color: #e3f2fd;">
             <div class="container-fluid">
-              <b>{{config('app.name')}}</b>
+              @php use App\Instansi; $datas= Instansi::where('id', '1')->first(); @endphp
+              <b>{{$datas->nama_instansi}}</b>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -23,17 +24,13 @@
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-target="#menuDropdown" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
                     <ul class="dropdown-menu dropdown-menu-dark" id="menuDropdown">
-                      <li><a class="dropdown-item" href="#">Instansi</a></li>
+                      <li><a class="dropdown-item" href="{{route('data-instansi.index')}}">Instansi</a></li>
                       <li><a class="dropdown-item" href="{{route('data-kategori.index')}}">Kategori</a></li>
                       <li><a class="dropdown-item" href="{{route('data-kop-surat.index')}}">Kop Surat</a></li>
                       <li><a class="dropdown-item" href="{{route('data-user.index')}}">User</a></li>
                     </ul>
                   </li>                  
-                </ul>
-                {{-- <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> --}}
+                </ul>                
                 </div>              
                 <div class="user-area dropdown float-right">
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
