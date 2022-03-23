@@ -218,7 +218,7 @@
                     var oTable = $('#table_kategori').dataTable();
                     oTable.fnDraw(false);
                 });
-                iziToast.warning({
+                iziToast.success({
                     title: 'Data Berhasil Dihapus',
                     message: '{{ Session('delete')}}',
                     position: 'bottomRight'
@@ -226,8 +226,8 @@
             },
             error: function (data) {
                 $('#konfirmasi-modal').modal('hide');
-                iziToast.error({
-                    title: 'Data Gagal Dihapus',
+                iziToast.warning({
+                    title: 'Gagal dihapus. Data ini masih digunakan!',
                     message: '{{ Session('delete')}}',
                     position: 'bottomRight'
                 });
