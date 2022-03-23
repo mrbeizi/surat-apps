@@ -170,7 +170,7 @@
                     return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 }, 
-                {data: 'tgl_surat',name: 'tgl_surat'},
+                {data: 'tgl_surat', render: function ( data, type, row ) {return moment(row.tgl_surat).format("LL")},},
                 {data: 'title',name: 'title'},
                 {data: 'no_surat',name: 'no_surat'},
                 {data: 'nama_kategori',name: 'nama_kategori'},
