@@ -25,6 +25,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::resource('data-kategori', 'KategoriController');
     Route::resource('data-inbox', 'InboxController');
     Route::resource('data-kop-surat', 'KopSuratController');
+    Route::resource('data-instansi', 'InstansiController');
 
     /* Delete All Selected Row */
     Route::post('/deleteSelectedKategori','KategoriController@deleteAll')->name('deleteSelectedKategori');

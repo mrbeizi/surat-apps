@@ -17,7 +17,7 @@
                         <tr>
                         <th><input type="checkbox" name="main_checkbox"><label></label></th>
                         <th>#</th>
-                        <th>TGL Surat</th>
+                        <th>Tanggal Surat</th>
                         <th>Judul</th>
                         <th>No Surat</th>
                         <th>Kategori</th>
