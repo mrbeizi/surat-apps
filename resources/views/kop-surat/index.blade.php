@@ -185,7 +185,7 @@
         $('#button-simpan').val("create-post");
         $('#id').val('');
         $('#form-tambah-edit').trigger("reset");
-        $('#modal-judul').html("Tambah User Baru");
+        $('#modal-judul').html("Tambah Kop Surat");
         $('#tambah-edit-modal').modal('show');
     });
 
